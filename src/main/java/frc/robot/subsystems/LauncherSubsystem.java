@@ -17,11 +17,12 @@ public class LauncherSubsystem extends SubsystemBase {
     this.feedMotor = new Talon(43);
   }
 
-    public void launch(double speed) {this
+    public void launch(double speed) {
+      this.launcherMotor.set(speed);
     }
 
     public void feed(double speed) {
-      
+      this.feedMotor.set(speed);
     }
 
   @Override
