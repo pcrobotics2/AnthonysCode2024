@@ -17,22 +17,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
  
   /** Creates a new DriveTrainSubsystem. */
   public DriveTrainSubsystem() {
-    this.frontleft = new Spark(0);
-    this.frontright = new Spark(1);
-    this.backleft = new Spark(2);
+    this.frontleft = new Spark(1);
+    this.frontright = new Spark(2);
+    this.backleft = new Spark(0);
     this.backright = new Spark(3);
 
-    
+    this.frontleft.setInverted(true);
+    this.backleft.setInverted(true);
   }
-
   public void drive(double leftSpeed, double rightSpeed) {
     this.frontleft.set(leftSpeed);
     this.frontright.set(rightSpeed);
     this.backleft.set(leftSpeed);
     this.backright.set(rightSpeed);
-
   }
-
+  p
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
