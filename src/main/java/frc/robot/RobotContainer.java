@@ -7,8 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.commands.RunMotor;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.RunMotorSubsystem;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -23,7 +28,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   public CommandJoystick gamepad1 = new CommandJoystick(0);
-private DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
+  public RunMotorSubsystem RunmotorSubsystem = new RunMotorSubsystem();
+  public RunMotor RunMotor = new RunMotor(RunmotorSubsystem);
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -35,6 +41,8 @@ private DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+
+    gamepad1.button(Constants.buttonList.x).whileTrue(RunMotor);
   }
 
   /**
@@ -51,18 +59,11 @@ private DriveTrainSubsystem driveTrainSubsystem = new DriveTrainSubsystem();
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
+    CANSparkMax motor1 = new CANSparkMax(14, MotorType.kBrushless);
+    motor1.set(1.0);
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    driveTrainSubsystem.setDefaultCommand(
-      new RunCommand(
-      () ->
-      driveTrainSubsystem.drive(
-        gamepad1.getRawAxis(1),
-        gamepad1.getRawAxis(5)
-      ),
-      driveTrainSubsystem)
-    );
   }
 
   /**
